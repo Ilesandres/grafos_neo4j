@@ -59,6 +59,4 @@ def get_nodes_by_label(label: str):
 
 @graph_bp.route("/stats", methods=["GET"])
 def get_stats():
-    count = _service.get_node_count()
-    labels = _service.get_available_labels()
-    return jsonify({"totalNodes": count, "labels": labels})
+    return jsonify(_service.get_stats())

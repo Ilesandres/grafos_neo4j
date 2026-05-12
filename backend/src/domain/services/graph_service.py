@@ -18,3 +18,6 @@ class GraphService:
 
     def get_available_labels(self) -> list[str]:
         return self._repository.get_labels()
+
+    def get_stats(self) -> dict:
+        return self._repository.get_stats()

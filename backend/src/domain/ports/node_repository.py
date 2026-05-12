@@ -20,3 +20,7 @@ class NodeRepository(ABC):
     @abstractmethod
     def get_labels(self) -> list[str]:
         ...
+
+    @abstractmethod
+    def get_stats(self) -> dict:
+        ...
