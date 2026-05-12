@@ -62,7 +62,7 @@ html {
   --border-light: rgba(0, 0, 0, 0.06);
   --text-primary: #1a1a2e;
   --text-secondary: #6b6b80;
-  --text-inverse: #fff;
+  --text-inverse: #1a1a2e;
   --accent: #0097a7;
   --accent-secondary: #6200ea;
   --accent-tertiary: #00897b;
