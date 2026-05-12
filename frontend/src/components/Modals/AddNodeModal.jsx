@@ -1,12 +1,24 @@
 import { useState } from 'react'
-import { X, Plus, Trash2 } from 'lucide-react'
+import { X, Plus, Trash2, ChevronDown, ChevronUp, BookOpen } from 'lucide-react'
 import { createNode } from '../../services/api'
+
+const guide = {
+  Persona: ['nombre', 'rol'],
+  Interfaz: ['nombre', 'tecnologia'],
+  Servicio: ['nombre', 'tecnologia'],
+  Microservicio: ['nombre', 'tecnologia'],
+  BaseDatos: ['nombre', 'tipo'],
+  Dispositivo: ['nombre', 'ip'],
+  Servidor: ['nombre', 'ip'],
+  Entidad: ['nombre'],
+}
 
 export default function AddNodeModal({ onClose, onCreated }) {
   const [labels, setLabels] = useState([''])
   const [props, setProps] = useState([{ key: '', value: '' }])
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [showGuide, setShowGuide] = useState(false)
 
   const addLabel = () => setLabels([...labels, ''])
   const updateLabel = (i, v) => { const c = [...labels]; c[i] = v; setLabels(c) }
@@ -75,6 +87,38 @@ export default function AddNodeModal({ onClose, onCreated }) {
             {loading ? 'Creating...' : 'Create Node'}
           </button>
         </form>
+
+        <button style={s.guideBtn} onClick={() => setShowGuide(!showGuide)}>
+          <BookOpen size={14} />
+          {showGuide ? 'Hide' : 'Show'} Data Model Guide
+          {showGuide ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+        </button>
+
+        {showGuide && (
+          <div style={s.guide}>
+            <p style={s.guideTitle}>Valid Labels &amp; Properties</p>
+            <table style={s.table}>
+              <thead>
+                <tr>
+                  <th style={s.th}>Label</th>
+                  <th style={s.th}>Properties</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Object.entries(guide).map(([label, keys]) => (
+                  <tr key={label}>
+                    <td style={s.td}>
+                      <span style={s.badge}>{label}</span>
+                    </td>
+                    <td style={s.td}>
+                      <code style={s.code}>{keys.join(', ')}</code>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   )
@@ -90,7 +134,7 @@ const s = {
     background: 'var(--bg-secondary)',
     borderRadius: '12px',
     padding: '1.5rem',
-    width: '420px', maxWidth: '90vw', maxHeight: '80vh', overflow: 'auto',
+    width: '480px', maxWidth: '90vw', maxHeight: '85vh', overflow: 'auto',
     border: '1px solid var(--border-color)',
     fontFamily: 'var(--font-body)',
   },
@@ -136,5 +180,47 @@ const s = {
     background: 'var(--accent)', color: '#fff', fontWeight: 'var(--font-weight-semibold)',
     cursor: 'pointer', fontSize: 'var(--font-size-sm)', fontFamily: 'var(--font-body)',
     marginTop: '0.5rem',
+  },
+  guideBtn: {
+    display: 'inline-flex', alignItems: 'center', gap: '0.4rem', width: '100%',
+    marginTop: '0.75rem', padding: '0.45rem 0.6rem',
+    borderRadius: '8px', border: '1px solid var(--border-color)',
+    background: 'var(--bg-card)', color: 'var(--text-secondary)',
+    cursor: 'pointer', fontSize: 'var(--font-size-xs)', fontFamily: 'var(--font-body)',
+    justifyContent: 'center',
+  },
+  guide: {
+    marginTop: '0.5rem', padding: '0.75rem',
+    borderRadius: '8px', border: '1px solid var(--border-light)',
+    background: 'var(--bg-primary)',
+  },
+  guideTitle: {
+    margin: '0 0 0.5rem', fontSize: 'var(--font-size-xs)',
+    fontWeight: 'var(--font-weight-semibold)', color: 'var(--text-primary)',
+    fontFamily: 'var(--font-title)',
+  },
+  table: { width: '100%', borderCollapse: 'collapse' },
+  th: {
+    textAlign: 'left', padding: '0.3rem 0.4rem',
+    fontSize: 'var(--font-size-xs)', color: 'var(--text-secondary)',
+    fontWeight: 'var(--font-weight-medium)',
+    borderBottom: '1px solid var(--border-color)',
+    fontFamily: 'var(--font-body)',
+  },
+  td: {
+    padding: '0.3rem 0.4rem',
+    borderBottom: '1px solid var(--border-light)',
+    fontSize: 'var(--font-size-xs)',
+    fontFamily: 'var(--font-body)',
+  },
+  badge: {
+    padding: '0.15rem 0.4rem', borderRadius: '8px',
+    background: 'rgba(0,229,255,0.1)', color: 'var(--accent)',
+    fontSize: 'var(--font-size-xs)', fontWeight: 'var(--font-weight-medium)',
+    fontFamily: 'var(--font-mono)',
+  },
+  code: {
+    fontSize: 'var(--font-size-xs)', color: 'var(--text-secondary)',
+    fontFamily: 'var(--font-mono)',
   },
 }
