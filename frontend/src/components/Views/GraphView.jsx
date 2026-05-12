@@ -40,6 +40,24 @@ export default function GraphView() {
     return () => obs.disconnect()
   }, [])
 
+  useEffect(() => {
+    const fg = fgRef.current
+    if (!fg || graphData.nodes.length === 0) return
+
+    fg.d3Force('link').distance(160)
+    fg.d3Force('charge').strength(-500)
+    fg.d3Force('center', null)
+    fg.d3AlphaDecay(0.02)
+    fg.d3VelocityDecay(0.3)
+  }, [graphData])
+
+  const handleEngineStop = useCallback(() => {
+    const fg = fgRef.current
+    if (fg) {
+      fg.d3AlphaDecay(0.5)
+    }
+  }, [])
+
   const isDark = theme === 'dark'
 
   const nodeColor = useCallback((n) => {
@@ -56,37 +74,43 @@ export default function GraphView() {
     return colors[n.label] || '#888'
   }, [isDark])
 
-  const linkColor = useCallback(() => (isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)'), [isDark])
-
-  const linkLabel = useCallback(
-    (link) => link.type,
-    [],
-  )
+  const linkColor = useCallback((link) => {
+    const palette = {
+      DESARROLLA: isDark ? '#4fc3f7' : '#0288d1',
+      COLABORA_CON: isDark ? '#aed581' : '#689f38',
+      SOLICITA: isDark ? '#ffb74d' : '#e65100',
+      REDIRECCIONA: isDark ? '#e0e0e0' : '#616161',
+      HOSTEA: isDark ? '#ce93d8' : '#7b1fa2',
+      USA: isDark ? '#ef9a9a' : '#c62828',
+      CONECTA: isDark ? '#80cbc4' : '#00695c',
+    }
+    return palette[link.type] || (isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)')
+  }, [isDark])
 
   return (
     <div>
       <h3 style={styles.heading}>Graph Visualization</h3>
-      <p style={styles.hint}>Drag nodes • Scroll to zoom • Hover edges to see relationship type</p>
+      <p style={styles.hint}>Drag nodes to rearrange • Scroll to zoom • Relationship labels shown on each edge</p>
       <div ref={containerRef} style={styles.graphContainer}>
         <ForceGraph2D
           ref={fgRef}
           graphData={graphData}
           nodeLabel="name"
           nodeColor={nodeColor}
-          nodeRelSize={7}
+          nodeRelSize={8}
           linkColor={linkColor}
-          linkLabel={linkLabel}
+          linkWidth={1.5}
           linkDirectionalArrowLength={8}
-          linkDirectionalArrowRelPos={1}
+          linkDirectionalArrowRelPos={0.95}
           linkDirectionalParticles={2}
-          linkDirectionalParticleSpeed={0.004}
+          linkDirectionalParticleSpeed={0.003}
           linkCanvasObject={(link, ctx) => {
             const text = link.type
             if (!text) return
 
             const start = link.source
             const end = link.target
-            if (!start || !end) return
+            if (!start || !end || typeof start.x !== 'number' || typeof end.x !== 'number') return
 
             const mx = (start.x + end.x) / 2
             const my = (start.y + end.y) / 2
@@ -98,24 +122,28 @@ export default function GraphView() {
             ctx.translate(mx, my)
             ctx.rotate(angle)
 
-            ctx.font = '10px var(--font-mono)'
+            ctx.font = '9px monospace'
             ctx.textAlign = 'center'
             ctx.textBaseline = 'bottom'
 
-            const padding = 3
-            const textWidth = ctx.measureText(text).width
+            const padding = 4
+            const label = text.replace(/_/g, ' ')
+            const textWidth = ctx.measureText(label).width
 
-            ctx.fillStyle = isDark ? 'rgba(13,13,26,0.75)' : 'rgba(245,245,249,0.8)'
-            ctx.fillRect(-textWidth / 2 - padding, -12, textWidth + padding * 2, 16)
+            ctx.fillStyle = isDark ? 'rgba(13,13,26,0.8)' : 'rgba(245,245,249,0.85)'
+            ctx.fillRect(-textWidth / 2 - padding, -14, textWidth + padding * 2, 18)
 
-            ctx.fillStyle = isDark ? '#00e5ff' : '#0097a7'
-            ctx.fillText(text, 0, -2)
+            ctx.fillStyle = isDark ? '#4fc3f7' : '#0288d1'
+            ctx.fillText(label, 0, -2)
+
             ctx.restore()
           }}
+          onEngineStop={handleEngineStop}
           backgroundColor={isDark ? '#0d0d1a' : '#f5f5f9'}
           width={dimensions.width}
           height={dimensions.height}
-          cooldownTicks={100}
+          warmupTicks={200}
+          cooldownTicks={0}
         />
       </div>
     </div>
