@@ -1,15 +1,17 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import ForceGraph2D from 'react-force-graph-2d'
-import { Plus } from 'lucide-react'
+import { Plus, Link2 } from 'lucide-react'
 import { getNodes } from '../../services/api'
 import { useTheme } from '../../context/ThemeContext'
 import AddNodeModal from '../Modals/AddNodeModal'
+import AddRelationshipModal from '../Modals/AddRelationshipModal'
 import NodeDetailModal from '../Modals/NodeDetailModal'
 
 export default function GraphView() {
   const [graphData, setGraphData] = useState({ nodes: [], links: [] })
   const [ready, setReady] = useState(false)
   const [showAddModal, setShowAddModal] = useState(false)
+  const [showRelModal, setShowRelModal] = useState(false)
   const [selectedNode, setSelectedNode] = useState(null)
   const fgRef = useRef()
   const { theme } = useTheme()
@@ -111,9 +113,14 @@ export default function GraphView() {
           <h3 style={s.heading}>Graph Visualization</h3>
           <p style={s.hint}>Drag nodes to rearrange &bull; Scroll to zoom &bull; Click node for details</p>
         </div>
-        <button style={s.addBtn} onClick={() => setShowAddModal(true)}>
-          <Plus size={16} /> Add Node
-        </button>
+        <div style={s.toolbar}>
+          <button style={s.addBtn} onClick={() => setShowRelModal(true)}>
+            <Link2 size={16} /> Add Relation
+          </button>
+          <button style={s.addBtn} onClick={() => setShowAddModal(true)}>
+            <Plus size={16} /> Add Node
+          </button>
+        </div>
       </div>
       {ready ? (
         <div style={s.wrap}>
@@ -149,6 +156,14 @@ export default function GraphView() {
         />
       )}
 
+      {showRelModal && (
+        <AddRelationshipModal
+          graphData={graphData}
+          onClose={() => setShowRelModal(false)}
+          onCreated={loadData}
+        />
+      )}
+
       {selectedNode && (
         <NodeDetailModal
           node={selectedNode}
@@ -178,6 +193,9 @@ const s = {
     fontSize: 'var(--font-size-sm)',
     color: 'var(--text-secondary)',
     fontFamily: 'var(--font-body)',
+  },
+  toolbar: {
+    display: 'flex', gap: '0.5rem',
   },
   addBtn: {
     display: 'inline-flex', alignItems: 'center', gap: '0.3rem',

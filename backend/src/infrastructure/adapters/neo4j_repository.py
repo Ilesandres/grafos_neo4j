@@ -166,3 +166,25 @@ class Neo4jRepository(NodeRepository):
                 id=node_id,
             )
             return result.single()["deleted"] > 0
+
+    def create_relationship(self, source: str, target: str, type: str, properties: dict) -> Relationship:
+        with self._driver.session() as session:
+            result = session.run(
+                f"""
+                MATCH (a) WHERE elementId(a) = $source
+                MATCH (b) WHERE elementId(b) = $target
+                CREATE (a)-[r:`{type}` $props]->(b)
+                RETURN r
+                """,
+                source=source,
+                target=target,
+                props=properties,
+            )
+            r = result.single()["r"]
+            return Relationship(
+                id=r.element_id,
+                type=r.type,
+                start_node_id=r.start_node.element_id,
+                end_node_id=r.end_node.element_id,
+                properties=dict(r),
+            )

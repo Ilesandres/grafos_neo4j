@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from src.domain.entities.node import GraphData, Node
+from src.domain.entities.node import GraphData, Node, Relationship
 
 
 class NodeRepository(ABC):
@@ -40,4 +40,8 @@ class NodeRepository(ABC):
 
     @abstractmethod
     def delete_node(self, node_id: str) -> bool:
+        ...
+
+    @abstractmethod
+    def create_relationship(self, source: str, target: str, type: str, properties: dict) -> Relationship:
         ...

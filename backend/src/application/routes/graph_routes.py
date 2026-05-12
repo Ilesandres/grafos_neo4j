@@ -96,3 +96,18 @@ def delete_node(node_id: str):
     if not deleted:
         return jsonify({"error": "Node not found"}), 404
     return jsonify({"message": "Node deleted"}), 200
+
+
+@graph_bp.route("/relationships", methods=["POST"])
+def create_relationship():
+    data = request.get_json(silent=True)
+    if not data or not data.get("source") or not data.get("target") or not data.get("type"):
+        return jsonify({"error": "source, target and type required"}), 400
+    rel = _service.create_relationship(data["source"], data["target"], data["type"], data.get("properties", {}))
+    return jsonify({
+        "id": rel.id,
+        "type": rel.type,
+        "source": rel.start_node_id,
+        "target": rel.end_node_id,
+        "properties": rel.properties,
+    }), 201

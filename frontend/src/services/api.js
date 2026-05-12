@@ -47,3 +47,11 @@ export function deleteNode(nodeId) {
     method: 'DELETE',
   })
 }
+
+export function createRelationship(source, target, type, properties) {
+  return fetchJson(`${BASE}/relationships`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ source, target, type, properties }),
+  })
+}

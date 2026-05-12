@@ -1,6 +1,6 @@
 from typing import Optional
 
-from src.domain.entities.node import GraphData, Node
+from src.domain.entities.node import GraphData, Node, Relationship
 from src.domain.ports.node_repository import NodeRepository
 
 
@@ -35,3 +35,6 @@ class GraphService:
 
     def delete_node(self, node_id: str) -> bool:
         return self._repository.delete_node(node_id)
+
+    def create_relationship(self, source: str, target: str, type: str, properties: dict) -> Relationship:
+        return self._repository.create_relationship(source, target, type, properties)
