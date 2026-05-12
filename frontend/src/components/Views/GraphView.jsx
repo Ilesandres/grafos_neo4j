@@ -54,6 +54,22 @@ export default function GraphView() {
 
   const isDark = theme === 'dark'
 
+  const accent = isDark ? '#00e5ff' : '#0097a7'
+
+  const pickTextColor = useCallback((hexColor) => {
+    if (!hexColor || typeof hexColor !== 'string' || !hexColor.startsWith('#')) {
+      return isDark ? '#0d0d1a' : '#ffffff'
+    }
+    const hex = hexColor.slice(1)
+    if (hex.length !== 6) return isDark ? '#0d0d1a' : '#ffffff'
+    const r = parseInt(hex.slice(0, 2), 16) / 255
+    const g = parseInt(hex.slice(2, 4), 16) / 255
+    const b = parseInt(hex.slice(4, 6), 16) / 255
+    // Relative luminance (sRGB)
+    const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b
+    return lum > 0.6 ? '#0d0d1a' : '#ffffff'
+  }, [isDark])
+
   const linkLabel = useCallback((l) => l.type, [])
 
   const paintLink = useCallback((link, ctx) => {
@@ -81,18 +97,6 @@ export default function GraphView() {
     ctx.restore()
   }, [isDark])
 
-  const paintNode = useCallback((node, ctx) => {
-    const label = node.name
-    if (!label) return
-    ctx.save()
-    ctx.font = '4px sans-serif'
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'top'
-    ctx.fillStyle = isDark ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.8)'
-    ctx.fillText(label, node.x, node.y + 5)
-    ctx.restore()
-  }, [isDark])
-
   const nodeColor = useCallback((n) => {
     const pal = {
       Persona: '#00e5ff', Microservicio: '#7c4dff', Interfaz: '#00e676',
@@ -101,6 +105,29 @@ export default function GraphView() {
     }
     return pal[n.label] || '#888'
   }, [])
+
+  const paintNode = useCallback((node, ctx) => {
+    const label = node.name
+    if (!label) return
+    const text = String(label)
+    const r = (node?.r ?? node?.val ?? 8)
+    const maxChars = Math.max(6, Math.floor(r * 1.6))
+    const clipped = text.length > maxChars ? text.slice(0, Math.max(0, maxChars - 1)) + '…' : text
+
+    ctx.save()
+    ctx.font = '4px sans-serif'
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+
+    const fill = pickTextColor(nodeColor(node))
+    // Small outline to keep readable on any node color
+    ctx.lineWidth = 1
+    ctx.strokeStyle = fill === '#ffffff' ? 'rgba(0,0,0,0.45)' : 'rgba(255,255,255,0.45)'
+    ctx.strokeText(clipped, node.x, node.y)
+    ctx.fillStyle = fill
+    ctx.fillText(clipped, node.x, node.y)
+    ctx.restore()
+  }, [nodeColor, pickTextColor])
 
   const handleNodeClick = useCallback((node) => {
     setSelectedNode(node)
@@ -134,12 +161,16 @@ export default function GraphView() {
             nodeCanvasObject={paintNode}
             onNodeClick={handleNodeClick}
             linkLabel={linkLabel}
+            linkCanvasObjectMode={() => 'after'}
             linkCanvasObject={paintLink}
-            linkColor={() => (isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.15)')}
+            linkColor={() => (isDark ? 'rgba(0,229,255,0.28)' : 'rgba(0,151,167,0.32)')}
+            linkWidth={() => 1.6}
             linkDirectionalParticles={2}
             linkDirectionalParticleSpeed={0.003}
+            linkDirectionalParticleColor={() => (isDark ? 'rgba(0,229,255,0.55)' : 'rgba(0,151,167,0.55)')}
             linkDirectionalArrowLength={8}
             linkDirectionalArrowRelPos={0.95}
+            linkDirectionalArrowColor={() => accent}
             backgroundColor={isDark ? '#0d0d1a' : '#f5f5f9'}
             width={800}
             height={600}
