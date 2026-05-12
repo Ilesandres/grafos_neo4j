@@ -70,7 +70,7 @@ const styles = {
   heading: {
     margin: '0 0 1rem',
     fontWeight: 600,
-    color: '#fff',
+    color: 'var(--text-inverse)',
   },
   filterBar: {
     display: 'flex',
@@ -80,27 +80,28 @@ const styles = {
     flexWrap: 'wrap',
   },
   filterLabel: {
-    color: '#a0a0b8',
+    color: 'var(--text-secondary)',
     fontSize: '0.85rem',
   },
   filterBtn: {
     padding: '0.3rem 0.75rem',
     borderRadius: '6px',
-    border: '1px solid rgba(255,255,255,0.12)',
+    border: '1px solid var(--border-color)',
     background: 'transparent',
-    color: '#a0a0b8',
+    color: 'var(--text-secondary)',
     cursor: 'pointer',
     fontSize: '0.85rem',
   },
   activeFilter: {
     background: 'rgba(0,229,255,0.15)',
-    color: '#00E5FF',
-    borderColor: '#00E5FF',
+    color: 'var(--accent)',
+    borderColor: 'var(--accent)',
   },
   tableWrap: {
     overflowX: 'auto',
-    border: '1px solid rgba(255,255,255,0.08)',
+    border: '1px solid var(--border-color)',
     borderRadius: '12px',
+    transition: 'border 0.3s',
   },
   table: {
     width: '100%',
@@ -110,29 +111,29 @@ const styles = {
   th: {
     textAlign: 'left',
     padding: '0.75rem 1rem',
-    color: '#a0a0b8',
-    borderBottom: '1px solid rgba(255,255,255,0.08)',
+    color: 'var(--text-secondary)',
+    borderBottom: '1px solid var(--border-color)',
     fontWeight: 600,
   },
   tr: {
-    borderBottom: '1px solid rgba(255,255,255,0.04)',
+    borderBottom: '1px solid var(--border-light)',
   },
   td: {
     padding: '0.65rem 1rem',
-    color: '#e0e0e0',
+    color: 'var(--text-primary)',
   },
   prop: {
     display: 'inline-block',
     marginRight: '0.5rem',
     padding: '0.15rem 0.4rem',
     borderRadius: '4px',
-    background: 'rgba(255,255,255,0.05)',
+    background: 'var(--bg-card)',
     fontSize: '0.8rem',
-    color: '#a0a0b8',
+    color: 'var(--text-secondary)',
   },
   empty: {
     padding: '2rem',
     textAlign: 'center',
-    color: '#a0a0b8',
+    color: 'var(--text-secondary)',
   },
 }

@@ -1,10 +1,12 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import ForceGraph2D from 'react-force-graph-2d'
 import { getNodes } from '../../services/api'
+import { useTheme } from '../../context/ThemeContext'
 
 export default function GraphView() {
   const [graphData, setGraphData] = useState({ nodes: [], links: [] })
   const fgRef = useRef()
+  const { theme } = useTheme()
 
   useEffect(() => {
     getNodes().then((data) => {
@@ -22,24 +24,31 @@ export default function GraphView() {
     }).catch(() => {})
   }, [])
 
+  const nodeColor = useCallback((n) => {
+    const isDark = theme === 'dark'
+    const colors = {
+      Person: isDark ? '#00e5ff' : '#0097a7',
+      Company: isDark ? '#7c4dff' : '#6200ea',
+      Product: isDark ? '#00e676' : '#00897b',
+    }
+    return colors[n.label] || (isDark ? '#ff5252' : '#d32f2f')
+  }, [])
+
   return (
     <div>
       <h3 style={styles.heading}>Graph Visualization</h3>
       <p style={styles.hint}>Drag nodes • Scroll to zoom • Click to inspect</p>
-      <div style={styles.graphContainer}>
+      <div style={styles.graphContainer(theme)}>
         <ForceGraph2D
           ref={fgRef}
           graphData={graphData}
           nodeLabel="name"
-          nodeColor={(n) => {
-            const colors = { Person: '#00E5FF', Company: '#7C4DFF', Product: '#00E676' }
-            return colors[n.label] || '#FF5252'
-          }}
+          nodeColor={nodeColor}
           nodeRelSize={6}
           linkDirectionalParticles={1}
           linkDirectionalParticleSpeed={0.005}
           linkLabel="label"
-          backgroundColor="#0d0d1a"
+          backgroundColor={theme === 'dark' ? '#0d0d1a' : '#f5f5f9'}
           width={800}
           height={600}
         />
@@ -52,17 +61,17 @@ const styles = {
   heading: {
     margin: '0 0 0.25rem',
     fontWeight: 600,
-    color: '#fff',
+    color: 'var(--text-inverse)',
   },
   hint: {
     margin: '0 0 1rem',
     fontSize: '0.85rem',
-    color: '#a0a0b8',
+    color: 'var(--text-secondary)',
   },
-  graphContainer: {
-    border: '1px solid rgba(255,255,255,0.08)',
+  graphContainer: (theme) => ({
+    border: '1px solid var(--border-color)',
     borderRadius: '12px',
     overflow: 'hidden',
     display: 'inline-block',
-  },
+  }),
 }

@@ -18,9 +18,10 @@ const styles = {
   container: {
     display: 'flex',
     minHeight: '100vh',
-    background: '#0d0d1a',
-    color: '#e0e0e0',
+    background: 'var(--bg-primary)',
+    color: 'var(--text-primary)',
     fontFamily: "'Segoe UI', system-ui, sans-serif",
+    transition: 'background 0.3s, color 0.3s',
   },
   main: {
     flex: 1,
@@ -30,13 +31,13 @@ const styles = {
   },
   header: {
     padding: '1rem 1.5rem',
-    borderBottom: '1px solid rgba(255,255,255,0.06)',
+    borderBottom: '1px solid var(--border-light)',
   },
   title: {
     margin: 0,
     fontSize: '1.15rem',
     fontWeight: 600,
-    color: '#fff',
+    color: 'var(--text-inverse)',
   },
   content: {
     flex: 1,
