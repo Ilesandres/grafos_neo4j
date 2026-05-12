@@ -1,0 +1,23 @@
+{
+  "name": "neo4j-graph-explorer",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.5.0",
+    "react-force-graph-2d": "^1.25.8",
+    "axios": "^1.7.9",
+    "lucide-react": "^0.488.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.4.1",
+    "vite": "^6.3.1"
+  }
+}
