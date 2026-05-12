@@ -42,6 +42,45 @@ export default function GraphView() {
 
   const isDark = theme === 'dark'
 
+  const linkLabel = useCallback((l) => l.type, [])
+
+  const paintLink = useCallback((link, ctx) => {
+    if (typeof link.source !== 'object' || typeof link.target !== 'object') return
+    const text = link.type
+    if (!text) return
+    const { x: sx, y: sy } = link.source
+    const { x: tx, y: ty } = link.target
+    const mx = (sx + tx) / 2
+    const my = (sy + ty) / 2
+    const angle = Math.atan2(ty - sy, tx - sx)
+    const bg = isDark ? 'rgba(13,13,26,0.75)' : 'rgba(245,245,249,0.75)'
+    const fg = isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.5)'
+    ctx.save()
+    ctx.translate(mx, my)
+    ctx.rotate(angle)
+    ctx.font = '3.5px sans-serif'
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'bottom'
+    const w = ctx.measureText(text).width
+    ctx.fillStyle = bg
+    ctx.fillRect(-w / 2 - 2, -5, w + 4, 8)
+    ctx.fillStyle = fg
+    ctx.fillText(text, 0, -2)
+    ctx.restore()
+  }, [isDark])
+
+  const paintNode = useCallback((node, ctx) => {
+    const label = node.name
+    if (!label) return
+    ctx.save()
+    ctx.font = '4px sans-serif'
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'top'
+    ctx.fillStyle = isDark ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.8)'
+    ctx.fillText(label, node.x, node.y + 5)
+    ctx.restore()
+  }, [isDark])
+
   const nodeColor = useCallback((n) => {
     const pal = {
       Persona: '#00e5ff', Microservicio: '#7c4dff', Interfaz: '#00e676',
@@ -63,6 +102,10 @@ export default function GraphView() {
             nodeLabel="name"
             nodeColor={nodeColor}
             nodeRelSize={8}
+            nodeCanvasObjectMode={() => 'after'}
+            nodeCanvasObject={paintNode}
+            linkLabel={linkLabel}
+            linkCanvasObject={paintLink}
             linkColor={() => (isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.15)')}
             linkDirectionalParticles={2}
             linkDirectionalParticleSpeed={0.003}
