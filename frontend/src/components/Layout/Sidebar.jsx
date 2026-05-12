@@ -60,6 +60,7 @@ const styles = {
     flexDirection: 'column',
     padding: '1rem 0',
     transition: 'background 0.3s',
+    fontFamily: 'var(--font-body)',
   },
   logo: {
     display: 'flex',
@@ -69,8 +70,9 @@ const styles = {
     marginBottom: '1.5rem',
   },
   logoText: {
-    fontWeight: 700,
-    fontSize: '1.1rem',
+    fontWeight: 'var(--font-weight-bold)',
+    fontSize: 'var(--font-size-md)',
+    fontFamily: 'var(--font-title)',
     color: 'var(--text-inverse)',
   },
   nav: {
@@ -87,13 +89,14 @@ const styles = {
     borderRadius: '8px',
     color: 'var(--text-secondary)',
     textDecoration: 'none',
-    fontSize: '0.9rem',
+    fontSize: 'var(--font-size-sm)',
     transition: 'all 0.15s',
+    fontFamily: 'var(--font-body)',
   },
   activeLink: {
     background: 'rgba(0,229,255,0.1)',
     color: 'var(--accent)',
-    fontWeight: 500,
+    fontWeight: 'var(--font-weight-medium)',
   },
   spacer: {
     flex: 1,
@@ -109,7 +112,8 @@ const styles = {
     background: 'var(--bg-card)',
     color: 'var(--text-secondary)',
     cursor: 'pointer',
-    fontSize: '0.85rem',
+    fontSize: 'var(--font-size-sm)',
+    fontFamily: 'var(--font-body)',
     transition: 'all 0.15s',
   },
 }

@@ -69,7 +69,9 @@ export default function TableView() {
 const styles = {
   heading: {
     margin: '0 0 1rem',
-    fontWeight: 600,
+    fontWeight: 'var(--font-weight-semibold)',
+    fontSize: 'var(--font-size-lg)',
+    fontFamily: 'var(--font-title)',
     color: 'var(--text-inverse)',
   },
   filterBar: {
@@ -78,10 +80,12 @@ const styles = {
     gap: '0.5rem',
     marginBottom: '1rem',
     flexWrap: 'wrap',
+    fontFamily: 'var(--font-body)',
   },
   filterLabel: {
     color: 'var(--text-secondary)',
-    fontSize: '0.85rem',
+    fontSize: 'var(--font-size-sm)',
+    fontFamily: 'var(--font-body)',
   },
   filterBtn: {
     padding: '0.3rem 0.75rem',
@@ -90,7 +94,8 @@ const styles = {
     background: 'transparent',
     color: 'var(--text-secondary)',
     cursor: 'pointer',
-    fontSize: '0.85rem',
+    fontSize: 'var(--font-size-sm)',
+    fontFamily: 'var(--font-body)',
   },
   activeFilter: {
     background: 'rgba(0,229,255,0.15)',
@@ -102,18 +107,21 @@ const styles = {
     border: '1px solid var(--border-color)',
     borderRadius: '12px',
     transition: 'border 0.3s',
+    fontFamily: 'var(--font-body)',
   },
   table: {
     width: '100%',
     borderCollapse: 'collapse',
-    fontSize: '0.85rem',
+    fontSize: 'var(--font-size-sm)',
   },
   th: {
     textAlign: 'left',
     padding: '0.75rem 1rem',
     color: 'var(--text-secondary)',
     borderBottom: '1px solid var(--border-color)',
-    fontWeight: 600,
+    fontWeight: 'var(--font-weight-semibold)',
+    fontFamily: 'var(--font-title)',
+    fontSize: 'var(--font-size-sm)',
   },
   tr: {
     borderBottom: '1px solid var(--border-light)',
@@ -121,6 +129,8 @@ const styles = {
   td: {
     padding: '0.65rem 1rem',
     color: 'var(--text-primary)',
+    fontFamily: 'var(--font-body)',
+    fontSize: 'var(--font-size-sm)',
   },
   prop: {
     display: 'inline-block',
@@ -128,12 +138,15 @@ const styles = {
     padding: '0.15rem 0.4rem',
     borderRadius: '4px',
     background: 'var(--bg-card)',
-    fontSize: '0.8rem',
+    fontSize: 'var(--font-size-xs)',
     color: 'var(--text-secondary)',
+    fontFamily: 'var(--font-mono)',
   },
   empty: {
     padding: '2rem',
     textAlign: 'center',
     color: 'var(--text-secondary)',
+    fontFamily: 'var(--font-body)',
+    fontSize: 'var(--font-size-sm)',
   },
 }

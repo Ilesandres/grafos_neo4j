@@ -20,7 +20,7 @@ const styles = {
     minHeight: '100vh',
     background: 'var(--bg-primary)',
     color: 'var(--text-primary)',
-    fontFamily: "'Segoe UI', system-ui, sans-serif",
+    fontFamily: 'var(--font-body)',
     transition: 'background 0.3s, color 0.3s',
   },
   main: {
@@ -35,8 +35,9 @@ const styles = {
   },
   title: {
     margin: 0,
-    fontSize: '1.15rem',
-    fontWeight: 600,
+    fontSize: 'var(--font-size-lg)',
+    fontWeight: 'var(--font-weight-semibold)',
+    fontFamily: 'var(--font-title)',
     color: 'var(--text-inverse)',
   },
   content: {

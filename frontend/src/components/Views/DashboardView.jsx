@@ -66,7 +66,9 @@ export default function DashboardView() {
 const styles = {
   heading: {
     margin: '0 0 1rem',
-    fontWeight: 600,
+    fontWeight: 'var(--font-weight-semibold)',
+    fontSize: 'var(--font-size-lg)',
+    fontFamily: 'var(--font-title)',
     color: 'var(--text-inverse)',
   },
   grid: {
@@ -82,16 +84,19 @@ const styles = {
     padding: '1.5rem',
     textAlign: 'center',
     transition: 'background 0.3s, border 0.3s',
+    fontFamily: 'var(--font-body)',
   },
   cardValue: {
-    fontSize: '2rem',
-    fontWeight: 700,
+    fontSize: 'var(--font-size-2xl)',
+    fontWeight: 'var(--font-weight-bold)',
     color: 'var(--text-inverse)',
     margin: '0.5rem 0 0.25rem',
+    fontFamily: 'var(--font-title)',
   },
   cardLabel: {
-    fontSize: '0.85rem',
+    fontSize: 'var(--font-size-sm)',
     color: 'var(--text-secondary)',
+    fontFamily: 'var(--font-body)',
   },
   section: {
     marginTop: '1rem',
@@ -106,7 +111,8 @@ const styles = {
     borderRadius: '20px',
     background: 'rgba(0,229,255,0.1)',
     color: 'var(--accent)',
-    fontSize: '0.85rem',
-    fontWeight: 500,
+    fontSize: 'var(--font-size-sm)',
+    fontWeight: 'var(--font-weight-medium)',
+    fontFamily: 'var(--font-mono)',
   },
 }

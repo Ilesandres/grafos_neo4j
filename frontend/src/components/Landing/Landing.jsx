@@ -144,9 +144,18 @@ export default function Landing() {
               Backend follows clean architecture with domain, infrastructure, and application layers
             </p>
             <div style={styles.archGrid}>
-              <div style={styles.archCard}><Layers size={24} color="var(--accent)" /><strong>Domain</strong><br />Entities, Ports, Services</div>
-              <div style={styles.archCard}><Server size={24} color="var(--accent-secondary)" /><strong>Infrastructure</strong><br />Neo4j Adapter, Config</div>
-              <div style={styles.archCard}><Box size={24} color="var(--accent-tertiary)" /><strong>Application</strong><br />Flask Routes, Blueprint</div>
+              <div style={styles.archCard}>
+                <Layers size={24} color="var(--accent)" />
+                <strong>Domain</strong><br />Entities, Ports, Services
+              </div>
+              <div style={styles.archCard}>
+                <Server size={24} color="var(--accent-secondary)" />
+                <strong>Infrastructure</strong><br />Neo4j Adapter, Config
+              </div>
+              <div style={styles.archCard}>
+                <Box size={24} color="var(--accent-tertiary)" />
+                <strong>Application</strong><br />Flask Routes, Blueprint
+              </div>
             </div>
           </div>
         </section>
@@ -173,7 +182,7 @@ const styles = {
     minHeight: '100vh',
     background: 'var(--landing-bg)',
     color: 'var(--text-primary)',
-    fontFamily: "'Segoe UI', system-ui, sans-serif",
+    fontFamily: 'var(--font-body)',
     transition: 'background 0.3s, color 0.3s',
   },
   header: {
@@ -186,12 +195,18 @@ const styles = {
     borderBottom: '1px solid var(--border-color)',
   },
   logo: { display: 'flex', alignItems: 'center', gap: '0.5rem' },
-  logoText: { fontSize: '1.2rem', fontWeight: 700, color: 'var(--text-inverse)' },
+  logoText: {
+    fontSize: 'var(--font-size-lg)',
+    fontWeight: 'var(--font-weight-bold)',
+    fontFamily: 'var(--font-title)',
+    color: 'var(--text-inverse)',
+  },
   ctaBtn: {
     display: 'flex', alignItems: 'center', gap: '0.4rem',
     padding: '0.5rem 1.2rem', border: '1px solid var(--border-color)',
     borderRadius: '8px', background: 'var(--bg-card)', color: 'var(--text-primary)',
-    cursor: 'pointer', fontSize: '0.9rem',
+    cursor: 'pointer', fontSize: 'var(--font-size-sm)',
+    fontFamily: 'var(--font-body)',
   },
   main: {
     position: 'relative', zIndex: 1,
@@ -203,38 +218,52 @@ const styles = {
     display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem',
   },
   title: {
-    fontSize: 'clamp(2rem, 5vw, 3.2rem)', fontWeight: 800,
+    fontSize: 'var(--font-size-3xl)', fontWeight: 'var(--font-weight-extrabold)',
+    fontFamily: 'var(--font-title)',
     background: 'linear-gradient(135deg, var(--accent), var(--accent-secondary))',
     WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+    letterSpacing: 'var(--letter-spacing-tight)',
+    lineHeight: 'var(--line-height-tight)',
   },
   subtitle: {
-    fontSize: '1.1rem', maxWidth: '580px',
-    lineHeight: 1.6, color: 'var(--text-secondary)',
+    fontSize: 'var(--font-size-lg)',
+    fontFamily: 'var(--font-body)',
+    maxWidth: '580px', lineHeight: 'var(--line-height-relaxed)',
+    color: 'var(--text-secondary)',
   },
   heroActions: {
     display: 'flex', gap: '1rem', alignItems: 'center',
   },
   heroBtn: {
     display: 'flex', alignItems: 'center', gap: '0.5rem',
-    padding: '0.8rem 2rem', fontSize: '1rem', fontWeight: 600,
+    padding: '0.8rem 2rem', fontSize: 'var(--font-size-md)',
+    fontWeight: 'var(--font-weight-semibold)',
+    fontFamily: 'var(--font-body)',
     border: 'none', borderRadius: '10px',
     background: 'linear-gradient(135deg, var(--accent), var(--accent-secondary))',
     color: '#fff', cursor: 'pointer',
   },
   ghostBtn: {
     display: 'flex', alignItems: 'center', gap: '0.3rem',
-    color: 'var(--text-secondary)', fontSize: '0.95rem',
+    color: 'var(--text-secondary)', fontSize: 'var(--font-size-sm)',
+    fontFamily: 'var(--font-body)',
     textDecoration: 'none', borderBottom: '1px solid transparent',
   },
   section: {
     marginBottom: '5rem', scrollMarginTop: '2rem',
   },
   sectionTitle: {
-    fontSize: '1.8rem', fontWeight: 700, color: 'var(--text-inverse)',
+    fontSize: 'var(--font-size-xl)',
+    fontWeight: 'var(--font-weight-bold)',
+    fontFamily: 'var(--font-title)',
+    color: 'var(--text-inverse)',
     marginBottom: '0.5rem',
   },
   sectionSub: {
-    color: 'var(--text-secondary)', marginBottom: '2.5rem', fontSize: '1rem',
+    color: 'var(--text-secondary)',
+    marginBottom: '2.5rem',
+    fontSize: 'var(--font-size-md)',
+    fontFamily: 'var(--font-body)',
   },
   featuresGrid: {
     display: 'grid',
@@ -245,11 +274,21 @@ const styles = {
     background: 'var(--card-bg)', border: '1px solid var(--border-color)',
     borderRadius: '16px', padding: '1.75rem', textAlign: 'left',
     transition: 'transform 0.2s, border-color 0.2s',
+    fontFamily: 'var(--font-body)',
   },
   cardTitle: {
-    margin: '0.75rem 0 0.4rem', fontSize: '1rem', color: 'var(--text-inverse)',
+    margin: '0.75rem 0 0.4rem',
+    fontSize: 'var(--font-size-md)',
+    fontWeight: 'var(--font-weight-semibold)',
+    fontFamily: 'var(--font-title)',
+    color: 'var(--text-inverse)',
   },
-  cardDesc: { fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: 1.5 },
+  cardDesc: {
+    fontSize: 'var(--font-size-sm)',
+    color: 'var(--text-secondary)',
+    lineHeight: 'var(--line-height-relaxed)',
+    fontFamily: 'var(--font-body)',
+  },
   stepsGrid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
@@ -258,14 +297,27 @@ const styles = {
   stepCard: {
     background: 'var(--card-bg)', border: '1px solid var(--border-color)',
     borderRadius: '16px', padding: '1.75rem', textAlign: 'left',
+    fontFamily: 'var(--font-body)',
   },
   stepNum: {
-    fontSize: '2rem', fontWeight: 800, color: 'var(--accent)', opacity: 0.5,
+    fontSize: 'var(--font-size-2xl)',
+    fontWeight: 'var(--font-weight-extrabold)',
+    color: 'var(--accent)', opacity: 0.5,
+    fontFamily: 'var(--font-mono)',
   },
   stepTitle: {
-    margin: '0.5rem 0 0.3rem', fontSize: '1rem', color: 'var(--text-inverse)',
+    margin: '0.5rem 0 0.3rem',
+    fontSize: 'var(--font-size-md)',
+    fontWeight: 'var(--font-weight-semibold)',
+    fontFamily: 'var(--font-title)',
+    color: 'var(--text-inverse)',
   },
-  stepDesc: { fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.5 },
+  stepDesc: {
+    fontSize: 'var(--font-size-sm)',
+    color: 'var(--text-secondary)',
+    lineHeight: 'var(--line-height-relaxed)',
+    fontFamily: 'var(--font-body)',
+  },
   techGrid: {
     display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1rem',
   },
@@ -273,13 +325,25 @@ const styles = {
     display: 'flex', alignItems: 'center', gap: '0.5rem',
     padding: '0.6rem 1.2rem', borderRadius: '10px',
     border: '1px solid var(--border-color)', background: 'var(--card-bg)',
+    fontFamily: 'var(--font-body)',
   },
-  techName: { fontSize: '0.9rem', fontWeight: 500, color: 'var(--text-primary)' },
+  techName: {
+    fontSize: 'var(--font-size-sm)',
+    fontWeight: 'var(--font-weight-medium)',
+    color: 'var(--text-primary)',
+    fontFamily: 'var(--font-body)',
+  },
   archBox: {
     background: 'var(--card-bg)', border: '1px solid var(--border-color)',
     borderRadius: '20px', padding: '2.5rem',
+    fontFamily: 'var(--font-body)',
   },
-  archSub: { color: 'var(--text-secondary)', marginBottom: '2rem', fontSize: '0.95rem' },
+  archSub: {
+    color: 'var(--text-secondary)',
+    marginBottom: '2rem',
+    fontSize: 'var(--font-size-sm)',
+    fontFamily: 'var(--font-body)',
+  },
   archGrid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
@@ -288,19 +352,27 @@ const styles = {
   archCard: {
     padding: '1.25rem', borderRadius: '12px',
     border: '1px solid var(--border-color)',
-    fontSize: '0.85rem', lineHeight: 1.6, color: 'var(--text-secondary)',
+    fontSize: 'var(--font-size-sm)',
+    lineHeight: 'var(--line-height-relaxed)',
+    color: 'var(--text-secondary)',
+    fontFamily: 'var(--font-body)',
   },
   ctaSection: {
     display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem',
     marginBottom: '3rem',
   },
   ctaTitle: {
-    fontSize: '1.6rem', fontWeight: 700, color: 'var(--text-inverse)',
+    fontSize: 'var(--font-size-xl)',
+    fontWeight: 'var(--font-weight-bold)',
+    fontFamily: 'var(--font-title)',
+    color: 'var(--text-inverse)',
   },
   footer: {
     position: 'relative', zIndex: 1,
     display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem',
     padding: '1.5rem', borderTop: '1px solid var(--border-color)',
-    fontSize: '0.85rem', color: 'var(--text-secondary)',
+    fontSize: 'var(--font-size-sm)',
+    color: 'var(--text-secondary)',
+    fontFamily: 'var(--font-body)',
   },
 }
