@@ -39,6 +39,27 @@ neo4j-graph-explorer/
 - **Node.js 20+**
 - **Neo4j** corriendo en `127.0.0.1:7687`
 
+## Seed Data
+
+El archivo `backend/scripts/seed.cypher` contiene el script `CREATE` completo con 20 nodos y 37 relaciones (personas, microservicios, bases de datos, infraestructura y flujos).
+
+Para cargarlo en Neo4j:
+
+**Opción 1 — Neo4j Browser:** pegar el contenido en el editor y ejecutar.
+
+**Opción 2 — cypher-shell:**
+```bash
+cd backend
+type scripts\seed.cypher | cypher-shell -u neo4j -p Asdf1234*
+```
+
+**Opción 3 — PowerShell:**
+```powershell
+Get-Content scripts\seed.cypher | & "C:\Program Files\Neo4j\bin\cypher-shell.bat" -u neo4j -p Asdf1234*
+```
+
+> ⚠️ El script es **idempotente**: cada ejecución crea nuevos nodos (no se salta duplicados). Si quieres reiniciar, ejecuta primero `MATCH (n) DETACH DELETE n`.
+
 ## Configuración
 
 ### Backend
@@ -89,8 +110,13 @@ El frontend en desarrollo proxy automaticalas llamadas `/api/*` al backend en `1
 |--------|------|-------------|
 | GET | `/api/graph/nodes` | Todos los nodos y relaciones |
 | GET | `/api/graph/nodes/:label` | Nodos filtrados por label |
+| POST | `/api/graph/nodes` | Crear un nodo |
+| GET | `/api/graph/node/:id` | Obtener un nodo por ID |
+| PUT | `/api/graph/node/:id` | Actualizar propiedades de un nodo |
+| DELETE | `/api/graph/node/:id` | Eliminar un nodo (con sus relaciones) |
+| POST | `/api/graph/relationships` | Crear una relación entre dos nodos |
 | GET | `/api/graph/labels` | Lista de labels disponibles |
-| GET | `/api/graph/stats` | Estadísticas (total nodos, labels) |
+| GET | `/api/graph/stats` | Estadísticas (total nodos, relaciones, labels) |
 
 ## Vistas del Frontend
 

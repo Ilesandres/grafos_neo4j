@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom'
-import { LayoutDashboard, Network, Table2, LogOut } from 'lucide-react'
+import { LayoutDashboard, Network, Table2, LogOut, Sun, Moon } from 'lucide-react'
+import { useTheme } from '../../context/ThemeContext'
 
 const links = [
   { to: '/app', end: true, label: 'Dashboard', icon: LayoutDashboard },
@@ -8,10 +9,12 @@ const links = [
 ]
 
 export default function Sidebar() {
+  const { theme, toggle } = useTheme()
+
   return (
     <aside style={styles.sidebar}>
       <div style={styles.logo}>
-        <Network size={24} color="#00E5FF" />
+        <Network size={24} color="var(--accent)" />
         <span style={styles.logoText}>Neo4j</span>
       </div>
 
@@ -34,6 +37,11 @@ export default function Sidebar() {
 
       <div style={styles.spacer} />
 
+      <button onClick={toggle} style={styles.themeBtn}>
+        {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+        <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+      </button>
+
       <a href="/" style={styles.link}>
         <LogOut size={18} />
         <span>Exit</span>
@@ -46,11 +54,13 @@ const styles = {
   sidebar: {
     width: '220px',
     minHeight: '100vh',
-    background: '#0f0f1e',
-    borderRight: '1px solid rgba(255,255,255,0.06)',
+    background: 'var(--sidebar-bg)',
+    borderRight: '1px solid var(--border-light)',
     display: 'flex',
     flexDirection: 'column',
     padding: '1rem 0',
+    transition: 'background 0.3s',
+    fontFamily: 'var(--font-body)',
   },
   logo: {
     display: 'flex',
@@ -60,9 +70,10 @@ const styles = {
     marginBottom: '1.5rem',
   },
   logoText: {
-    fontWeight: 700,
-    fontSize: '1.1rem',
-    color: '#fff',
+    fontWeight: 'var(--font-weight-bold)',
+    fontSize: 'var(--font-size-md)',
+    fontFamily: 'var(--font-title)',
+    color: 'var(--text-inverse)',
   },
   nav: {
     display: 'flex',
@@ -76,17 +87,33 @@ const styles = {
     gap: '0.6rem',
     padding: '0.65rem 0.75rem',
     borderRadius: '8px',
-    color: '#a0a0b8',
+    color: 'var(--text-secondary)',
     textDecoration: 'none',
-    fontSize: '0.9rem',
+    fontSize: 'var(--font-size-sm)',
     transition: 'all 0.15s',
+    fontFamily: 'var(--font-body)',
   },
   activeLink: {
     background: 'rgba(0,229,255,0.1)',
-    color: '#00E5FF',
-    fontWeight: 500,
+    color: 'var(--accent)',
+    fontWeight: 'var(--font-weight-medium)',
   },
   spacer: {
     flex: 1,
+  },
+  themeBtn: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.6rem',
+    padding: '0.65rem 0.75rem',
+    margin: '0 0.5rem 0.5rem',
+    borderRadius: '8px',
+    border: '1px solid var(--border-light)',
+    background: 'var(--bg-card)',
+    color: 'var(--text-secondary)',
+    cursor: 'pointer',
+    fontSize: 'var(--font-size-sm)',
+    fontFamily: 'var(--font-body)',
+    transition: 'all 0.15s',
   },
 }

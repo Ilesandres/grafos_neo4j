@@ -14,25 +14,25 @@ export default function DashboardView() {
       label: 'Total Nodes',
       value: stats?.totalNodes ?? '—',
       icon: Database,
-      color: '#00E5FF',
+      color: 'var(--accent)',
     },
     {
       label: 'Labels',
       value: stats?.labels?.length ?? '—',
       icon: Tags,
-      color: '#7C4DFF',
+      color: 'var(--accent-secondary)',
     },
     {
       label: 'Relationships',
       value: stats?.totalRelationships ?? '—',
       icon: Share2,
-      color: '#00E676',
+      color: 'var(--accent-tertiary)',
     },
     {
       label: 'Status',
       value: stats ? 'Connected' : 'Waiting',
       icon: Activity,
-      color: stats ? '#00E676' : '#FF5252',
+      color: stats ? 'var(--accent-tertiary)' : 'var(--accent-red)',
     },
   ]
 
@@ -66,8 +66,10 @@ export default function DashboardView() {
 const styles = {
   heading: {
     margin: '0 0 1rem',
-    fontWeight: 600,
-    color: '#fff',
+    fontWeight: 'var(--font-weight-semibold)',
+    fontSize: 'var(--font-size-lg)',
+    fontFamily: 'var(--font-title)',
+    color: 'var(--text-inverse)',
   },
   grid: {
     display: 'grid',
@@ -76,21 +78,25 @@ const styles = {
     marginBottom: '2rem',
   },
   card: {
-    background: 'rgba(255,255,255,0.04)',
-    border: '1px solid rgba(255,255,255,0.08)',
+    background: 'var(--card-bg)',
+    border: '1px solid var(--border-color)',
     borderRadius: '12px',
     padding: '1.5rem',
     textAlign: 'center',
+    transition: 'background 0.3s, border 0.3s',
+    fontFamily: 'var(--font-body)',
   },
   cardValue: {
-    fontSize: '2rem',
-    fontWeight: 700,
-    color: '#fff',
+    fontSize: 'var(--font-size-2xl)',
+    fontWeight: 'var(--font-weight-bold)',
+    color: 'var(--text-inverse)',
     margin: '0.5rem 0 0.25rem',
+    fontFamily: 'var(--font-title)',
   },
   cardLabel: {
-    fontSize: '0.85rem',
-    color: '#a0a0b8',
+    fontSize: 'var(--font-size-sm)',
+    color: 'var(--text-secondary)',
+    fontFamily: 'var(--font-body)',
   },
   section: {
     marginTop: '1rem',
@@ -104,8 +110,9 @@ const styles = {
     padding: '0.35rem 0.75rem',
     borderRadius: '20px',
     background: 'rgba(0,229,255,0.1)',
-    color: '#00E5FF',
-    fontSize: '0.85rem',
-    fontWeight: 500,
+    color: 'var(--accent)',
+    fontSize: 'var(--font-size-sm)',
+    fontWeight: 'var(--font-weight-medium)',
+    fontFamily: 'var(--font-mono)',
   },
 }

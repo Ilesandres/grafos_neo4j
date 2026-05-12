@@ -1,4 +1,6 @@
-from src.domain.entities.node import GraphData
+from typing import Optional
+
+from src.domain.entities.node import GraphData, Node, Relationship
 from src.domain.ports.node_repository import NodeRepository
 
 
@@ -18,3 +20,21 @@ class GraphService:
 
     def get_available_labels(self) -> list[str]:
         return self._repository.get_labels()
+
+    def get_stats(self) -> dict:
+        return self._repository.get_stats()
+
+    def create_node(self, labels: list[str], properties: dict) -> Node:
+        return self._repository.create_node(labels, properties)
+
+    def get_node(self, node_id: str) -> Optional[Node]:
+        return self._repository.get_node(node_id)
+
+    def update_node(self, node_id: str, properties: dict) -> Optional[Node]:
+        return self._repository.update_node(node_id, properties)
+
+    def delete_node(self, node_id: str) -> bool:
+        return self._repository.delete_node(node_id)
+
+    def create_relationship(self, source: str, target: str, type: str, properties: dict) -> Relationship:
+        return self._repository.create_relationship(source, target, type, properties)
