@@ -123,3 +123,46 @@ class Neo4jRepository(NodeRepository):
             rels = session.run("MATCH ()-[r]->() RETURN count(r) AS c").single()["c"]
             labels = [r["label"] for r in session.run("CALL db.labels() YIELD label RETURN label")]
             return {"totalNodes": nodes, "totalRelationships": rels, "labels": labels}
+
+    def create_node(self, labels: list[str], properties: dict) -> Node:
+        label_str = ":".join(labels)
+        with self._driver.session() as session:
+            result = session.run(
+                f"CREATE (n:{label_str} $props) RETURN n",
+                props=properties,
+            )
+            n = result.single()["n"]
+            return Node(id=n.element_id, labels=list(n.labels), properties=dict(n))
+
+    def get_node(self, node_id: str) -> Node | None:
+        with self._driver.session() as session:
+            result = session.run(
+                "MATCH (n) WHERE elementId(n) = $id RETURN n",
+                id=node_id,
+            )
+            record = result.single()
+            if not record:
+                return None
+            n = record["n"]
+            return Node(id=n.element_id, labels=list(n.labels), properties=dict(n))
+
+    def update_node(self, node_id: str, properties: dict) -> Node | None:
+        with self._driver.session() as session:
+            result = session.run(
+                "MATCH (n) WHERE elementId(n) = $id SET n += $props RETURN n",
+                id=node_id,
+                props=properties,
+            )
+            record = result.single()
+            if not record:
+                return None
+            n = record["n"]
+            return Node(id=n.element_id, labels=list(n.labels), properties=dict(n))
+
+    def delete_node(self, node_id: str) -> bool:
+        with self._driver.session() as session:
+            result = session.run(
+                "MATCH (n) WHERE elementId(n) = $id DETACH DELETE n RETURN count(n) AS deleted",
+                id=node_id,
+            )
+            return result.single()["deleted"] > 0

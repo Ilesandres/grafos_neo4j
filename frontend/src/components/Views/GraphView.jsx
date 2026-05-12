@@ -1,21 +1,29 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import ForceGraph2D from 'react-force-graph-2d'
+import { Plus } from 'lucide-react'
 import { getNodes } from '../../services/api'
 import { useTheme } from '../../context/ThemeContext'
+import AddNodeModal from '../Modals/AddNodeModal'
+import NodeDetailModal from '../Modals/NodeDetailModal'
 
 export default function GraphView() {
   const [graphData, setGraphData] = useState({ nodes: [], links: [] })
   const [ready, setReady] = useState(false)
+  const [showAddModal, setShowAddModal] = useState(false)
+  const [selectedNode, setSelectedNode] = useState(null)
   const fgRef = useRef()
   const { theme } = useTheme()
 
-  useEffect(() => {
+  const loadData = useCallback(() => {
+    setReady(false)
     getNodes()
       .then((data) => {
         const nodes = data.nodes.map((n) => ({
           id: n.id,
           name: n.properties?.nombre || n.properties?.name || n.properties?.title || n.labels?.[0] || n.id.slice(0, 8),
           label: n.labels?.[0] || 'Node',
+          labels: n.labels,
+          properties: n.properties,
         }))
         const links = data.relationships.map((r) => ({
           source: r.source,
@@ -27,6 +35,8 @@ export default function GraphView() {
       })
       .catch(() => {})
   }, [])
+
+  useEffect(() => { loadData() }, [loadData])
 
   useEffect(() => {
     if (!ready || !fgRef.current) return
@@ -90,10 +100,21 @@ export default function GraphView() {
     return pal[n.label] || '#888'
   }, [])
 
+  const handleNodeClick = useCallback((node) => {
+    setSelectedNode(node)
+  }, [])
+
   return (
     <div>
-      <h3 style={s.heading}>Graph Visualization</h3>
-      <p style={s.hint}>Drag nodes to rearrange &bull; Scroll to zoom</p>
+      <div style={s.topBar}>
+        <div>
+          <h3 style={s.heading}>Graph Visualization</h3>
+          <p style={s.hint}>Drag nodes to rearrange &bull; Scroll to zoom &bull; Click node for details</p>
+        </div>
+        <button style={s.addBtn} onClick={() => setShowAddModal(true)}>
+          <Plus size={16} /> Add Node
+        </button>
+      </div>
       {ready ? (
         <div style={s.wrap}>
           <ForceGraph2D
@@ -104,6 +125,7 @@ export default function GraphView() {
             nodeRelSize={8}
             nodeCanvasObjectMode={() => 'after'}
             nodeCanvasObject={paintNode}
+            onNodeClick={handleNodeClick}
             linkLabel={linkLabel}
             linkCanvasObject={paintLink}
             linkColor={() => (isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.15)')}
@@ -119,11 +141,31 @@ export default function GraphView() {
       ) : (
         <div style={s.loading}>Loading graph data...</div>
       )}
+
+      {showAddModal && (
+        <AddNodeModal
+          onClose={() => setShowAddModal(false)}
+          onCreated={loadData}
+        />
+      )}
+
+      {selectedNode && (
+        <NodeDetailModal
+          node={selectedNode}
+          onClose={() => setSelectedNode(null)}
+          onUpdated={loadData}
+          onDeleted={loadData}
+        />
+      )}
     </div>
   )
 }
 
 const s = {
+  topBar: {
+    display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
+    marginBottom: '1rem',
+  },
   heading: {
     margin: '0 0 0.25rem',
     fontWeight: 'var(--font-weight-semibold)',
@@ -132,10 +174,17 @@ const s = {
     color: 'var(--text-inverse)',
   },
   hint: {
-    margin: '0 0 1rem',
+    margin: 0,
     fontSize: 'var(--font-size-sm)',
     color: 'var(--text-secondary)',
     fontFamily: 'var(--font-body)',
+  },
+  addBtn: {
+    display: 'inline-flex', alignItems: 'center', gap: '0.3rem',
+    padding: '0.5rem 1rem', borderRadius: '8px', border: 'none',
+    background: 'var(--accent)', color: '#fff', cursor: 'pointer',
+    fontSize: 'var(--font-size-sm)', fontWeight: 'var(--font-weight-medium)',
+    fontFamily: 'var(--font-body)', whiteSpace: 'nowrap',
   },
   wrap: {
     border: '1px solid var(--border-color)',
