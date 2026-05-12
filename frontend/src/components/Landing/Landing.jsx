@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom'
 import {
-  Database, Network, BarChart3, ArrowRight, Server, Github, Code2,
+  Database, Network, BarChart3, ArrowRight, Server, Code2,
   Box, Layers, Eye, Zap, Globe, ArrowDown,
 } from 'lucide-react'
 import CursorFollower from './CursorFollower'
 import MeshBackground from './MeshBackground'
 import GraphCanvas from './GraphCanvas'
+import useScrollReveal from '../../hooks/useScrollReveal'
 
 const features = [
   {
@@ -58,6 +59,7 @@ const techs = [
 
 export default function Landing() {
   const navigate = useNavigate()
+  const revealRef = useScrollReveal()
 
   return (
     <div style={styles.wrapper}>
@@ -74,7 +76,7 @@ export default function Landing() {
         </button>
       </header>
 
-      <main style={styles.main}>
+      <main ref={revealRef} style={styles.main}>
         <section style={styles.hero}>
           <h1 style={styles.title}>Explore Your Graph Database</h1>
           <p style={styles.subtitle}>
@@ -94,7 +96,7 @@ export default function Landing() {
           </div>
         </section>
 
-        <section id="features" style={styles.section}>
+        <section id="features" data-reveal style={styles.section}>
           <h2 style={styles.sectionTitle}>Everything You Need</h2>
           <p style={styles.sectionSub}>Explore graph data from any angle</p>
           <div style={styles.featuresGrid}>
@@ -108,7 +110,7 @@ export default function Landing() {
           </div>
         </section>
 
-        <section id="how-it-works" style={styles.section}>
+        <section id="how-it-works" data-reveal style={styles.section}>
           <h2 style={styles.sectionTitle}>How It Works</h2>
           <p style={styles.sectionSub}>From database to visualization in four steps</p>
           <div style={styles.stepsGrid}>
@@ -122,7 +124,7 @@ export default function Landing() {
           </div>
         </section>
 
-        <section id="tech-stack" style={styles.section}>
+        <section id="tech-stack" data-reveal style={styles.section}>
           <h2 style={styles.sectionTitle}>Tech Stack</h2>
           <p style={styles.sectionSub}>Built with modern technologies</p>
           <div style={styles.techGrid}>
@@ -135,7 +137,7 @@ export default function Landing() {
           </div>
         </section>
 
-        <section style={styles.section}>
+        <section data-reveal style={styles.section}>
           <div style={styles.archBox}>
             <h2 style={styles.sectionTitle}>Hexagonal Architecture</h2>
             <p style={styles.archSub}>
